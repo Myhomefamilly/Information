@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect,generate_csrf
+from logging.handlers import RotatingFileHandler
 
 # session拓展工具将flask中的session存储到redis
 from flask_session import Session
 from config import config_dict
 import pymysql
+import logging
 
 # python2和python3数据库相互转化使用
 pymysql.install_as_MySQLdb()
@@ -15,7 +17,27 @@ pymysql.install_as_MySQLdb()
 db = SQLAlchemy()
 
 # 全局变量，申明未空类型数据
-redis_store = None  # type:StrictRedis
+redis_store = None   # type:StrictRedis
+
+
+def write_log(config_class):
+
+    # 设置日志的记录等级
+    # DevelopmentConfig.LOG_LEVEL  == logging.DEBUG
+    # ProductionConfig.LOG_LEVEL  == logging.ERROR
+    logging.basicConfig(level=config_class.LOG_LEVEL) # 调试debug级
+
+    # 创建日志记录器，指明日志保存的路径、每个日志文件的最大大小、保存的日志文件个数上限
+    file_log_handler = RotatingFileHandler("logs/log", maxBytes=1024 * 1024 * 100, backupCount=10)
+
+    # 创建日志记录的格式　日志等级　输入日志信息的文件名　行数　日志信息
+    formatter = logging.Formatter('%(levelname)s %(fileanme)s:%(lineno) %(message)s')
+
+    # 为刚创建的日志记录器设置日志记录格式
+    file_log_handler.setFormatter(formatter)
+
+    # 为全局的日志工具对象（flask app使用的）添加日志记录器
+    logging.getLogger().addHandler(file_log_handler)
 
 
 # 工厂方法
