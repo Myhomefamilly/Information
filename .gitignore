@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 .idea/
+migrations
 logs/log*
 # Distribution / packaging
 .Python

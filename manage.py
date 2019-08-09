@@ -3,6 +3,7 @@ from flask_migrate import Migrate, MigrateCommand
 # 我们存储数据用到的session
 from flask import session
 from info import create_app, db
+from info import models
 
 """
 manage.py文件只需要负责项目启动＆数据库的迁移即可，
@@ -32,3 +33,12 @@ if __name__ == '__main__':
     # app.run()
     # 9.使用管理对象运行项目
     manager.run()
+
+"""
+数据库迁移命令：
+python manage.py db init
+python manage.py db migrate -m"initial"
+python manage.py db upgrade
+
+注意：迁移时一定要导入models模型类
+"""
