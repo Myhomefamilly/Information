@@ -76,9 +76,13 @@ def create_app(config_name):
     # 5.创建Flask_session工具类对象：将flask.session的存储从 服务器`内存` 调整到 `redis`数据库
     Session(app)
 
-    # 注册首页蓝图
+    # 首页蓝图
     from info.modules.index import index_blu
     app.register_blueprint(index_blu)
+
+    # 注册蓝图
+    from info.modules.passport import passport_blu
+    app.register_blueprint(passport_blu)
 
     # 返回app对象
     return app
