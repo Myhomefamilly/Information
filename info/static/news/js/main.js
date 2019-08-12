@@ -123,7 +123,7 @@ $(function () {
             url: "/passport/login",
             type: "POST",
             headers: {
-                "x-CSRFToken": getCookie("csrf_token")
+                "X-CSRFToken": getCookie("csrf_token")
             },
             data: JSON.stringify(params),
             contentType: "application/json",
@@ -143,58 +143,58 @@ $(function () {
 
     // TODO 注册按钮点击
     $(".register_form_con").submit(function (e) {
-    e.preventDefault()
+        e.preventDefault()
 
-    // 取到用户输入的内容
-    var mobile = $("#register_mobile").val()
-    var smscode = $("#smscode").val()
-    var password = $("#register_password").val()
+        // 取到用户输入的内容
+        var mobile = $("#register_mobile").val()
+        var smscode = $("#smscode").val()
+        var password = $("#register_password").val()
 
-    if (!mobile) {
-        $("#register-mobile-err").show();
-        return;
-    }
-    if (!smscode) {
-        $("#register-sms-code-err").show();
-        return;
-    }
-    if (!password) {
-        $("#register-password-err").html("请填写密码!");
-        $("#register-password-err").show();
-        return;
-    }
-
-    if (password.length < 6) {
-        $("#register-password-err").html("密码长度不能少于6位");
-        $("#register-password-err").show();
-        return;
-    }
-
-    var params = {
-        "mobile": mobile,
-        "smscode": smscode,
-        "password": password,
-    }
-
-    $.ajax({
-        url:"/passport/register",
-        type: "post",
-        headers: {
-            "x-CSRFToken": getCookie("csrf_token")
-        },
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        success: function (resp) {
-            if (resp.error == "0"){
-                // 刷新当前界面
-                location.reload()
-            }else {
-                $("#register-password-err").html(resp.errmsg)
-                $("#register-password-err").show()
-            }
+        if (!mobile) {
+            $("#register-mobile-err").show();
+            return;
         }
+        if (!smscode) {
+            $("#register-sms-code-err").show();
+            return;
+        }
+        if (!password) {
+            $("#register-password-err").html("请填写密码!");
+            $("#register-password-err").show();
+            return;
+        }
+
+        if (password.length < 6) {
+            $("#register-password-err").html("密码长度不能少于6位");
+            $("#register-password-err").show();
+            return;
+        }
+
+        var params = {
+            "mobile": mobile,
+            "smscode": smscode,
+            "password": password,
+        }
+
+        $.ajax({
+            url: "/passport/register",
+            type: "post",
+            headers: {
+                "X-CSRFToken": getCookie("csrf_token")
+            },
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            success: function (resp) {
+                if (resp.error == "0") {
+                    // 刷新当前界面
+                    location.reload()
+                } else {
+                    $("#register-password-err").html(resp.errmsg)
+                    $("#register-password-err").show()
+                }
+            }
+        })
     })
-})
 })
 
 var imageCodeId = ""
@@ -320,4 +320,21 @@ function generateUUID() {
         return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
     return uuid;
+}
+
+
+function logout() {
+    $.ajax({
+        url: "/passport/logout",
+        type: "post",
+        contentType: "application/json",
+        headers: {
+            "X-CSRFToken": getCookie("csrf_token")
+        },
+        success: function (resp) {
+            // 刷新当前页面
+            location.reload()
+        }
+    })
+
 }

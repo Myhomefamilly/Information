@@ -192,7 +192,7 @@ def login():
     return jsonify(error=RET.OK, errmsg="用户登录成功")
 
 
-@passport_blu.route("/logout",methods=["POST"])
+@passport_blu.route("/logout", methods=["post"])
 def logout():
     """
     用户退出登录

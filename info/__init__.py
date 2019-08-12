@@ -80,7 +80,7 @@ def create_app(config_name):
         # 生成csrf_token随机值
         csrf_token = generate_csrf()
         # 获取响应对象，将crsf_token值设置到cookie中
-        response.set_cookie("crsf_token",csrf_token)
+        response.set_cookie("csrf_token",csrf_token)
         return response
 
     # 5.创建Flask_session工具类对象：将flask.session的存储从 服务器`内存` 调整到 `redis`数据库
