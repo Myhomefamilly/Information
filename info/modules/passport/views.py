@@ -150,3 +150,43 @@ def register():
     session["user_id"] = user.id
 
     return jsonify(error=RET.OK, errmsg="用户注册成功")
+
+
+@passport_blu.route("/login",methods=["post"])
+def login():
+    """
+    用户登录视图
+    :return:
+    """
+    mobile = request.json.get("mobile")
+    password = request.json.get("password")
+
+    if all([mobile,password]) is False:
+        return jsonify(error=RET.PARAMERR, errmsg="缺少必传参数")
+
+    try:
+        user = User.query.filter_by(mobile=mobile).first()
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(error=RET.DBERR, errmsg="查询数据错误")
+    if not user:
+        return jsonify(error=RET.USERERR, errmsg="用户不存在")
+
+    if not user.check_password(password):
+        return jsonify(error=RET.PWDERR, errmsg="用户或密码错误")
+
+    # 保持登录状态
+    session["user_id"] = user.id
+    session["nick_name"] = user.nick_name
+    session["mobile"] = user.mobile
+
+    # 记录最后一次登录时间
+    user.last_login = datetime.now()
+    db.session.add(user)
+    try:
+        db.session.commit()
+    except RedisError as e:
+        current_app.logger.error(e)
+        db.session.rollback()
+
+    return jsonify(error=RET.OK, errmsg="用户登录成功")
