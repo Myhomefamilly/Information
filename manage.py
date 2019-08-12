@@ -3,7 +3,6 @@ from flask_migrate import Migrate, MigrateCommand
 # 我们存储数据用到的session
 from flask import session
 from info import create_app, db
-from info import models
 
 """
 manage.py文件只需要负责项目启动＆数据库的迁移即可，
@@ -24,8 +23,10 @@ Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
 
+@app.route("/hello")
 def hello_world():
     session["name"] = "laowang"
+
     return "hello world!"
 
 

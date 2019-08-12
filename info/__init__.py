@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 
 # session拓展工具将flask中的session存储到redis
 from flask_session import Session
-from config import config_dict
+from config import config_dict, Config
 import pymysql
 import logging
 
@@ -58,6 +58,7 @@ def create_app(config_name):
     # ProductionConfig --- 赋予app属性为：线上模式app
     app.config.from_object(config_class)
 
+
     # 3.数据库对象（mysql&redis）
     # mysql数据库对象
     # 延迟加载，懒加载，当app有值的时候我才真正进行数据库初始化工作
@@ -74,6 +75,8 @@ def create_app(config_name):
     # CSRFProtect(app)
 
     # 5.创建Flask_session工具类对象：将flask.session的存储从 服务器`内存` 调整到 `redis`数据库
+    app.config.from_object(Config)
+    app.config['SESSION_TYPE'] = 'filesystem'
     Session(app)
 
     # 首页蓝图

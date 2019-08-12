@@ -17,7 +17,9 @@ class Config(object):
     REDIS_PORT = 6379
 
     # 使用session需要设置加密字符串
-    SECRET_KEY = "AVFHDUVFHABKVBSCSJBCAJBABCABSHBCHBHAI"
+    SECRET_KEY = "wewewefdvfsd4"
+    # SESSION_TYPE = 'filesystem'
+
 
     # 将flask.session的存储从服务器'内存'调整到'redis'数据库配置如下
     SESSION_TYPE = 'reids'  # 标明存储的数据类型
