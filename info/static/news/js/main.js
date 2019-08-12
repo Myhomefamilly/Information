@@ -122,6 +122,9 @@ $(function () {
         $.ajax({
             url: "/passport/login",
             type: "POST",
+            headers: {
+                "x-CSRFToken": getCookie("csrf_token")
+            },
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
@@ -176,6 +179,9 @@ $(function () {
     $.ajax({
         url:"/passport/register",
         type: "post",
+        headers: {
+            "x-CSRFToken": getCookie("csrf_token")
+        },
         data: JSON.stringify(params),
         contentType: "application/json",
         success: function (resp) {

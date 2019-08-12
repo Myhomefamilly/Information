@@ -72,7 +72,16 @@ def create_app(config_name):
     # 1.提取cookie中的csrf_token
     # 2.如果数据是通过表单发送：提取表单中的csrf_token， 如果数据是通过ajax请求发送：提取请求头中的字段X-CSRFToken
     # 3.对比这两个值是否一致
-    # CSRFProtect(app)
+    CSRFProtect(app)
+
+    @app.after_request
+    def set_csrf_token(response):
+        """补充crsf_token的逻辑"""
+        # 生成csrf_token随机值
+        csrf_token = generate_csrf()
+        # 获取响应对象，将crsf_token值设置到cookie中
+        response.set_cookie("crsf_token",csrf_token)
+        return response
 
     # 5.创建Flask_session工具类对象：将flask.session的存储从 服务器`内存` 调整到 `redis`数据库
     app.config.from_object(Config)

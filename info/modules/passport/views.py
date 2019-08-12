@@ -190,3 +190,15 @@ def login():
         db.session.rollback()
 
     return jsonify(error=RET.OK, errmsg="用户登录成功")
+
+
+@passport_blu.route("/logout",methods=["POST"])
+def logout():
+    """
+    用户退出登录
+    :return:
+    """
+    session.pop("user_id", None)
+    session.pop("mobile", None)
+    session.pop("nickname", None)
+    return jsonify(error=RET.OK, errmsg="OK")

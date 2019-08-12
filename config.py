@@ -11,6 +11,7 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = "mysql://root:mysql@127.0.0.1:3306/information"
     # 开启数据库跟踪修改操作
     SQLALCHEMY_TRACK_MODIFICATICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # redis数据库的配置信息
     REDIS_HOST = "127.0.0.1"
